@@ -65,9 +65,9 @@ export async function applyAuthChoice(
   const matchingProvider = pluginProviders.find((provider) => provider.id === params.authChoice);
   if (matchingProvider) {
     // Find the plugin that registered this provider
-    const { listPlugins } = await import("../plugins/registry.js");
-    const allPlugins = listPlugins({ config: params.config, workspaceDir });
-    const pluginEntry = allPlugins.find((p) => p.providerIds?.includes(matchingProvider.id));
+    const { loadOpenClawPlugins } = await import("../plugins/loader.js");
+    const registry = loadOpenClawPlugins({ config: params.config, workspaceDir });
+    const pluginEntry = registry.plugins.find((p) => p.providerIds?.includes(matchingProvider.id));
 
     if (pluginEntry) {
       const result = await applyAuthChoicePluginProvider(params, {

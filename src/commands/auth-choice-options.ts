@@ -34,12 +34,11 @@ export type AuthChoiceGroup = {
   options: AuthChoiceOption[];
 };
 
-const AUTH_CHOICE_GROUP_DEFS: {
-  value: AuthChoiceGroupId;
-  label: string;
-  hint?: string;
+type AuthChoiceGroupDef = AuthChoiceGroup & {
   choices: AuthChoice[];
-}[] = [
+};
+
+const AUTH_CHOICE_GROUP_DEFS: AuthChoiceGroupDef[] = [
   {
     value: "openai",
     label: "OpenAI",
@@ -243,14 +242,12 @@ export function buildAuthChoiceGroups(params: { store: AuthProfileStore; include
     }));
 
     if (providerOptions.length > 0) {
-      // Build the group with all required properties
-      const group: AuthChoiceGroup = {
+      groups.push({
         value: provider.id as AuthChoiceGroupId,
         label: provider.label,
         hint: provider.auth[0]?.hint,
         options: providerOptions,
-      };
-      groups.push(group);
+      });
     }
   }
 
