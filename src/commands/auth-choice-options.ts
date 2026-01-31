@@ -34,7 +34,10 @@ export type AuthChoiceGroup = {
   options: AuthChoiceOption[];
 };
 
-type AuthChoiceGroupDef = AuthChoiceGroup & {
+type AuthChoiceGroupDef = {
+  value: AuthChoiceGroupId;
+  label: string;
+  hint?: string;
   choices: AuthChoice[];
 };
 
@@ -216,8 +219,10 @@ export function buildAuthChoiceGroups(params: { store: AuthProfileStore; include
     options.map((opt) => [opt.value, opt]),
   );
 
-  const groups = AUTH_CHOICE_GROUP_DEFS.map((group) => ({
-    ...group,
+  const groups: AuthChoiceGroup[] = AUTH_CHOICE_GROUP_DEFS.map((group) => ({
+    value: group.value,
+    label: group.label,
+    hint: group.hint,
     options: group.choices
       .map((choice) => optionByValue.get(choice))
       .filter((opt): opt is AuthChoiceOption => Boolean(opt)),
