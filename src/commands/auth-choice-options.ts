@@ -229,9 +229,9 @@ export function buildAuthChoiceGroups(params: { store: AuthProfileStore; include
   }));
 
   // Dynamically discover plugin providers
-  const config = loadConfig();
+  // Pass empty config to discover all workspace/global plugins (enabled by default)
   const workspaceDir = resolveDefaultAgentWorkspaceDir();
-  const pluginProviders = resolvePluginProviders({ config, workspaceDir });
+  const pluginProviders = resolvePluginProviders({ config: {}, workspaceDir });
 
   for (const provider of pluginProviders) {
     // Skip if already in hardcoded groups
